@@ -1,46 +1,63 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
+import Section from "./components/Section/Section";
 import FeedbackOptions from "./components/FeedbackOptions/FeedbackOptions";
+import Statistics from "./components/Statistics/Statistics";
+import s from "./App.module.css";
 
 class App extends Component {
-
   state = {
     good: 0,
     neutral: 0,
-    bad: 0
-  }
+    bad: 0,
+  };
 
   handleIncrement = (e) => {
     if (e.target.innerText === "Good") {
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         good: prevState.good + 1,
       }));
     } else if (e.target.innerText === "Neutral") {
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         neutral: prevState.neutral + 1,
       }));
     } else if (e.target.innerText === "Bad") {
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         bad: prevState.bad + 1,
       }));
     }
-  }
+  };
+
+  countTotalFeedback = () => {
+    const { good, neutral, bad } = this.state;
+    return good + neutral + bad;
+  };
+
+  countPositiveFeedbackPercentage = () => {
+    const { good, neutral, bad } = this.state;
+    return Math.round((good * 100) / (good + neutral + bad));
+  };
 
   render() {
     const { good, neutral, bad } = this.state;
-    const total = good + neutral + bad;
-    const percentage = Math.round(good * 100 / total);
 
     return (
-      <div>
-        <h1>Please leave feedback</h1>
-        <FeedbackOptions options={["Good", "Neutral", "Bad"]} onLeaveFeedback={this.handleIncrement} />
-        <h2>Statistics</h2>
-        <p>Good: {good}</p>
-        <p>Neutral: {neutral}</p>
-        <p>Bad: {bad}</p>
-        <p>Total: {total}</p>
-        <p>Positive feedback:  {total !== 0 ? percentage : 0}%</p>
-      </div >
+      <div className={s.container}>
+        <Section title="Please leave feedback">
+          <FeedbackOptions
+            options={["Good", "Neutral", "Bad"]}
+            onLeaveFeedback={this.handleIncrement}
+          />
+        </Section>
+        <Section title="Statistics">
+          <Statistics
+            good={good}
+            neutral={neutral}
+            bad={bad}
+            total={this.countTotalFeedback()}
+            positivePercentage={this.countPositiveFeedbackPercentage()}
+          />
+        </Section>
+      </div>
     );
   }
 }
