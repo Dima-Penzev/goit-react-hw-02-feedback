@@ -10,7 +10,7 @@ function FeedbackOptions({ options, onLeaveFeedback }) {
           className={s.button}
           type="button"
           key={elem}
-          onClick={onLeaveFeedback}
+          onClick={() => onLeaveFeedback(elem.toLowerCase())}
         >
           {elem}
         </button>

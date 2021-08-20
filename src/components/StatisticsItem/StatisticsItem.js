@@ -1,17 +1,20 @@
 import PropTypes from "prop-types";
 import s from "./StatisticsItem.module.css";
 
-function StatisticsItem({ name, value }) {
+function StatisticsItem({ label, value }) {
   return (
-    <p className={s.item}>
-      {name}: {name !== "Positive feedback" ? value : `${value}%`}
-    </p>
+    <li className={s.item}>
+      {label}: {value}
+    </li>
   );
 }
 
 StatisticsItem.propTypes = {
-  name: PropTypes.string.isRequired,
-  value: PropTypes.number.isRequired,
+  label: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([
+    PropTypes.string.isRequired,
+    PropTypes.number.isRequired,
+  ]),
 };
 
 export default StatisticsItem;
